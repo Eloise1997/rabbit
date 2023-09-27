@@ -1,9 +1,11 @@
-﻿using FProjectCampingBackend.Models.EFModels;
+﻿using FProjectCamping.Common;
+using FProjectCampingBackend.Models.EFModels;
 using FProjectCampingBackend.Models.Repostories;
 using FProjectCampingBackend.Models.Services;
 using FProjectCampingBackend.Models.ViewModels.Orders;
 using PagedList;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -31,10 +33,11 @@ namespace FProjectCampingBackend.Controllers
 				var orderVm = new OrderVm()
 				{
 					Id = order.Id,
+					OrderNumber = order.OrderNumber,
 					OrderTime = order.OrderTime,
 					PaymentType = order.PaymentType.Name,
 					Price = order.TotalPrice,
-					Status = order.Status.ToString(),
+					Status = order.Status.IntToEnum<OrderStatusEnum>().GetAttribute<DisplayAttribute>().Name,
 					Member = order.Member.Name,
 					Name = order.Name,
 					Email = order.Email,
