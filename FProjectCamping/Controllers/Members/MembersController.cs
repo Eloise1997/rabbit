@@ -2,6 +2,7 @@
 using FProjectCamping.Models.EFModels;
 using FProjectCamping.Models.Infra;
 using FProjectCamping.Models.Infra.FileValidators;
+using FProjectCamping.Models.Repositories;
 using FProjectCamping.Models.Respositories;
 using FProjectCamping.Models.Services;
 using FProjectCamping.Models.ViewModels.Members;
@@ -16,7 +17,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using static FProjectCamping.MvcApplication;
-using Member = FProjectCamping.Models.EFModels.Member;
 
 namespace FProjectCamping.Members.Controllers
 {
@@ -27,6 +27,12 @@ namespace FProjectCamping.Members.Controllers
 		private readonly ProfileService _profileService = new ProfileService();
 		private readonly PasswordService _passwordService = new PasswordService();
 		private readonly PaymentTypeRepository _paymentTypeRepository = new PaymentTypeRepository();
+		private readonly MemberRepository _memberRepository;
+
+		public MembersController()
+		{
+			_memberRepository = new MemberRepository(new AppDbContext());
+		}
 
 		[Authorize]
 		public ActionResult Index()
@@ -74,23 +80,15 @@ namespace FProjectCamping.Members.Controllers
 
 		public ActionResult ActiveRegister(int memberId, string confirmCode)
 		{
-			if (memberId <= 0 || string.IsNullOrEmpty(confirmCode))
-			{
-				return View();
-			}
-
 			var db = new AppDbContext();
-
-			//根據memberId, confirmCode 取得Member
-			var member = db.Members.FirstOrDefault(p => p.Id == memberId && p.ConfirmCode == confirmCode && p.IsConfirmed == false);
+			var repo = new MemberRepository(db);
+			var member = repo.GetUnconfirmedMember(memberId, confirmCode);
 			if (member == null)
 			{
 				return View();
 			}
 
-			member.IsConfirmed = true;
-			member.ConfirmCode = null;
-			db.SaveChanges();
+			repo.ConfirmMember(member);
 
 			return View();
 		}
@@ -184,6 +182,7 @@ namespace FProjectCamping.Members.Controllers
 			catch (Exception ex)
 			{
 				ModelState.AddModelError("", ex.Message);
+				GetAndSetCurrentMember();
 				return View(vm);
 			}
 
@@ -244,7 +243,7 @@ namespace FProjectCamping.Members.Controllers
 		}
 
 		[Authorize]
-		public ActionResult MyOrders(int page = 1, int pageSize = 5) // todo
+		public ActionResult MyOrders(int page = 1, int pageSize = 5)
 		{
 			GetAndSetCurrentMember();
 			var orders = new OrderRepository().GetOrders(User.Identity.Name);
@@ -258,7 +257,7 @@ namespace FProjectCamping.Members.Controllers
 				order.PaymentType = paymentTypes.FirstOrDefault(x => x.Id == order.PaymentTypeId).Name;
 				order.Status = order.Status.StringToEnum<OrderStatusEnum>().GetAttribute<DisplayAttribute>().Name; // 轉成enum Display的字
 			}
-			var pagedOrders = vm.OrderBy(x => x.OrderTime).ToPagedList(page, pageSize);
+			var pagedOrders = vm.OrderByDescending(x => x.OrderTime).ToPagedList(page, pageSize);
 
 			return View(pagedOrders);
 		}
@@ -267,7 +266,8 @@ namespace FProjectCamping.Members.Controllers
 		public ActionResult EditPhoto()
 		{
 			var currentUserAccount = User.Identity.Name;
-			var member = GetMember(currentUserAccount);
+			var member = _memberRepository.GetMemberByAccount(currentUserAccount);
+			GetAndSetCurrentMember();
 			return View(member);
 		}
 
@@ -279,13 +279,13 @@ namespace FProjectCamping.Members.Controllers
 			string path = Server.MapPath("~/Files");
 			IFileValidator[] validators =
 			{
-		new FileRequired(),
-		new ImageValidator(),
-		new FileSizeValidator(1024),
-	};
+				new FileRequired(),
+				new ImageValidator(),
+				new FileSizeValidator(1024),
+			};
 
 			var currentUserAccount = User.Identity.Name;
-			var member = GetMember(currentUserAccount); // 獲取會員資料
+			var member = _memberRepository.GetMemberByAccount(currentUserAccount); // 獲取會員資料
 
 			try
 			{
@@ -301,7 +301,7 @@ namespace FProjectCamping.Members.Controllers
 				// 將檔名存入 photo
 				photo = fileName;
 
-				//todo將紀錄存
+				//將紀錄存
 				if (!ModelState.IsValid)
 				{
 					return View();
@@ -334,90 +334,21 @@ namespace FProjectCamping.Members.Controllers
 		}
 
 		//確認身分
+
 		private void GetAndSetCurrentMember()
 		{
 			var currentUserAccount = User.Identity.Name;
-			var member = GetMember(currentUserAccount);
+			var member = _memberRepository.GetMemberByAccount(currentUserAccount);
 			ViewBag.CurrentMember = member;
 		}
 
-		private Member GetMember(string account)
-		{
-			using (var db = new AppDbContext())
-			{
-				var memberInDb = db.Members.FirstOrDefault(p => p.Account == account);
-				return memberInDb;
-			}
-		}
-
-		//public ActionResult EditPhoto(string photo, HttpPostedFileBase myfile)
+		//private Member GetMember(string account)
 		//{
-		//	string fileName;
-		//	string path = Server.MapPath("~/Files");
-		//	IFileValidator[] validators =
-		//		new IFileValidator[]{
-		//			new FileRequired(),
-		//			new ImageValidator(),
-		//			new FileSizeValidator(1024),
-		//		};
-		//	try
+		//	using (var db = new AppDbContext())
 		//	{
-		//		fileName = UploadFileHelper
-		//			.Save(myfile, path, validators);
-
-		//		string sourceFullPath = Path.Combine(path, fileName);
-
-		//		string dest = System.Configuration
-		//						.ConfigurationManager
-		//						.AppSettings["frontSiteRootPath"];
-
-		//		string destFullPath = Path.Combine(dest, fileName);
-
-		//		System.IO.File.Copy(sourceFullPath, destFullPath, true);
-
+		//		var memberInDb = db.Members.FirstOrDefault(p => p.Account == account);
+		//		return memberInDb;
 		//	}
-		//	catch (Exception ex)
-		//	{
-		//		ModelState.AddModelError("myfile", ex.Message);
-
-		//		return View();
-		//	}
-
-		//	//將檔名存入photo
-		//	photo = fileName;
-
-		//	//todo將紀錄存
-		//	if (!ModelState.IsValid)
-		//	{
-		//		return View();
-		//	}
-		//	try
-		//	{
-		//		var currentUserAccount = User.Identity.Name;
-		//		EditPhoto(photo, currentUserAccount);
-		//		return View(photo);
-
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		ModelState.AddModelError("", ex.Message);
-		//	}
-
-		//	return RedirectToAction("Index");
-
-		//}
-
-		//private void EditPhoto(int memberId, string photo, string account)
-		//{
-		//	var db = new AppDbContext();
-		//	var memberInDb = db.Members.FirstOrDefault(p => p.Id == memberId);
-		//	if (memberInDb.Account != account)
-		//	{
-		//		throw new Exception("您沒有權限修改別人資料");
-		//	}
-
-		//	memberInDb.Photo = photo;
-		//	db.SaveChanges();
 		//}
 	}
 }

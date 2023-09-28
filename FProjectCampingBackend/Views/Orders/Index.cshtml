@@ -24,6 +24,7 @@
             <div>
                 訂單時間:
                 @Html.TextBox("FirstTime", null, new { @class = "form-control form-control-sm me-3", style = "width:auto;display:inline-block;", type = "date" })
+                ~
                 @Html.TextBox("EndTime", null, new { @class = "form-control form-control-sm me-3", style = "width:auto;display:inline-block;", type = "date" })
             </div>
 
@@ -35,7 +36,7 @@
 </div>
 
 <table class="table">
-    <tr class="table-dark">
+    <tr>
         <th>
             @Html.DisplayNameFor(model => model.OrderNumber)
         </th>
@@ -97,8 +98,9 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.ActionLink("編輯", "Edit", new { id = item.Id }, new { @class = "btn btn-dark" }) |
-                @Html.ActionLink("詳細資訊", "Details", new { id = item.Id }, new { @class = "btn btn-dark" }) |
+                <i class="bi bi-pen-fill"></i>
+                @Html.ActionLink("編輯", "Edit", new { id = item.Id }, new { @class = "" })
+                @Html.ActionLink("詳細資訊", "Details", new { id = item.Id }, new { @class = "" })
             </td>
         </tr>
     }
@@ -107,11 +109,19 @@
 @Html.PagedListPager((IPagedList)Model, x => Url.Action("Index", new { page = x }))
 
 @section css{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
     <style>
         .pagination-container {
             text-align: right;
         }
+
+        .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+            background-color: #4c4c4c;
+        }
+
+        a {
+            color: #000000;
+        }
     </style>
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
 
 }

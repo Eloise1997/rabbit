@@ -62,9 +62,8 @@
                     </div>
                     <div class="bottomArea">
                         <button type="button" id="MyOrder">我的訂單</button>
-
-                        <!-- 尚未付款 & 付款失敗 才顯示按鈕 -->
-                        @if (Model.StatusEnum == 1 || Model.StatusEnum == 3)
+                        <!-- 選擇PayPal || 尚未付款 & 付款失敗 才顯示按鈕 -->
+                        @if (Model.PaymentType == "PayPal" && (Model.StatusEnum == 1 || Model.StatusEnum == 3))
                         {
                             <!-- Paypal Smart Payment Button -->
                             <div id="paypal-button-container"></div>
@@ -152,7 +151,6 @@
 }).render('#paypal-button-container');
     </script>
     <script>
-           // 0925 rabbit
         document.getElementById('MyOrder')
             .addEventListener('click', function ()
             {

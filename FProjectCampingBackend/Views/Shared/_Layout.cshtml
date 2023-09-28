@@ -20,14 +20,15 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark flex-wrap justify-content-center">
-        <div class="container">
-
+        <div class="container" style="margin:0 auto;">
+           
             <a class="navbar-brand hometitle" href="@Url.Action("Index", "Home", new { area = "" })">
                 <span>
                     <img src="~/images/camping.png" alt="" style="width: 28px;"
                          class="img-fluid align-baseline">
                 </span>Camping放鬆村-後台
             </a>
+
         </div>
 
         <div class="container">
@@ -46,6 +47,7 @@
             </div>
         </div>
     </nav>
+
     <div class="container body-content">
         @RenderBody()
         <hr />

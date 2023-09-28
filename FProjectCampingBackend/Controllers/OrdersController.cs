@@ -47,7 +47,7 @@ namespace FProjectCampingBackend.Controllers
 			}
 
 			// 使用ToPagedList進行分頁
-			var pagedOrders = result.OrderBy(x => x.OrderTime).ToPagedList(page, pageSize);
+			var pagedOrders = result.OrderByDescending(x => x.OrderTime).ToPagedList(page, pageSize);
 
 			return View(pagedOrders);
 		}

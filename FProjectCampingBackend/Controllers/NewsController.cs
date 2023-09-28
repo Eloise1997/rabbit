@@ -46,10 +46,13 @@ namespace FProjectCampingBackend.Controllers
         // 如需詳細資料，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,CreatedTime,ModifiedTime,photo")] News news)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,CreatedTime,ModifiedTime")] News news)
         {
             if (ModelState.IsValid)
             {
+                news.CreatedTime = DateTime.Now;
+                news.ModifiedTime = DateTime.Now;
+
                 db.News.Add(news);
                 db.SaveChanges();
                 return RedirectToAction("Index");

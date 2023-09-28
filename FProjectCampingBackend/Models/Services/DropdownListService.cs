@@ -29,5 +29,16 @@ namespace FProjectCampingBackend.Models.Services
         };
             return new SelectList(items, "Value", "Text");
         }
-    }
+
+		public SelectList GetRankingList()
+		{
+			var items = new List<SelectListItem>
+		    {
+			    new SelectListItem { Value = "1", Text = "建立時間" },
+			    new SelectListItem { Value = "2", Text = "編號" },
+			    new SelectListItem { Value = "3", Text = "姓名" },
+		    };
+			return new SelectList(items, "Value", "Text");
+		}
+	}
 }

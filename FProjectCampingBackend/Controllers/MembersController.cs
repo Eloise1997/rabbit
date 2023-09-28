@@ -1,9 +1,9 @@
 ﻿using FProjectCampingBackend.Models.EFModels;
 using FProjectCampingBackend.Models.Repostories;
 using FProjectCampingBackend.Models.Services;
-using FProjectCampingBackend.Models.ViewModels;
+using FProjectCampingBackend.Models.ViewModels.Members;
 using PagedList;
-using System.Data;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -17,22 +17,28 @@ namespace FProjectCampingBackend.Controllers
 		private readonly DropdownListService _dropdownListService = new DropdownListService();
 
 		// GET: Members
-		public ActionResult Index(MemberVm vm, int page = 1, int pageSize = 5)
+		public ActionResult Index(MemberSearchCriteria vm, int page = 1, int pageSize = 5)
 		{
 			ViewData["Enabled"] = _dropdownListService.GetEnabledDropdownList();
 			ViewData["IsConfirmed"] = _dropdownListService.GetIsConfirmedDropdownList();
+
+			//ViewData["GetRanking"] = _dropdownListService.GetRankingList();
+
 			var repo = new MemberRepository(db);
 			IQueryable<Member> query = repo.GetMembers(vm);
 
-			var pagedMembers = query.OrderBy(m => m.Id).ToPagedList(page, pageSize);
+			var result = new List<MemberVm>();
+
+			foreach (var member in query)
+			{
+				var memberVm = member.ToMemberVm();
+				result.Add(memberVm);
+			}
+
+			//按照id倒序排列最新建立的會員會在前面
+			var pagedMembers = result.OrderByDescending(m => m.Id).ToPagedList(page, pageSize);
 
 			return View(pagedMembers);
-		}
-
-		public class MemberEnabledSelect
-		{
-			public Member Id { get; set; }
-			public string SelectedEnabled { get; set; }
 		}
 
 		// GET: Members/Details/5
@@ -93,14 +99,26 @@ namespace FProjectCampingBackend.Controllers
 		// 如需詳細資料，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit([Bind(Include = "Id,Account,Password,Name,Email,PhoneNum,Birthday,Enabled,Photo,CreatedTime,IsConfirmed,ConfirmCode")] Member member)
+		public ActionResult Edit(int id, bool enabled)
 		{
+			// 根据 id 从数据库中获取要编辑的 Member 对象
+			var member = db.Members.Find(id);
+
+			if (member == null)
+			{
+				return HttpNotFound(); // 处理找不到 Member 对象的情况
+			}
+
+			// 更新 Enabled 属性
+			member.Enabled = enabled;
+
 			if (ModelState.IsValid)
 			{
 				db.Entry(member).State = EntityState.Modified;
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
+
 			return View(member);
 		}
 

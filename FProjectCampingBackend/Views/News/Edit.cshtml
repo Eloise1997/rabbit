@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>News</h4>
         <hr />
@@ -71,4 +71,16 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+
+        <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+        <script>
+    tinymce.init({
+        selector: '.tinymce',
+        plugins: 'link lists',
+        toolbar: 'undo redo | bold italic | bullist numlist | link',
+        height: 300 // 設置編輯器高度
+    });
+        </script>
+    
 }

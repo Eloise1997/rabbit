@@ -11,7 +11,6 @@ namespace FProjectCamping.Models.EFModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RoomType()
         {
-            Photos = new HashSet<Photo>();
             Rooms = new HashSet<Room>();
         }
 
@@ -24,9 +23,6 @@ namespace FProjectCamping.Models.EFModels
         public int DisplayOrder { get; set; }
 
         public int ExtraBedPrice { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Photo> Photos { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms { get; set; }

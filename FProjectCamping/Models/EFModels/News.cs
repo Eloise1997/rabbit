@@ -8,12 +8,6 @@ namespace FProjectCamping.Models.EFModels
 
     public partial class News
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public News()
-        {
-            NewsImages = new HashSet<NewsImage>();
-        }
-
         public int Id { get; set; }
 
         [Required]
@@ -28,7 +22,7 @@ namespace FProjectCamping.Models.EFModels
 
         public DateTime ModifiedTime { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NewsImage> NewsImages { get; set; }
+        [StringLength(1000)]
+        public string Photo { get; set; }
     }
 }

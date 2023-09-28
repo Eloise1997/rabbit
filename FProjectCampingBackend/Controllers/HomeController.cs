@@ -20,7 +20,10 @@ namespace FProjectCampingBackend.Controllers
             {
                 var repo = new MemberRepository(dbConnection);
                 var getmember = repo.GetLatestMembers();
-                return View(getmember);
+				var getNewOrders = repo.GetNewOrders();
+				ViewBag.NewOrders = getNewOrders;
+
+				return View(getmember);
             }
         }
 

@@ -1,6 +1,6 @@
-﻿@using PagedList.Mvc;
+﻿@model IEnumerable<FProjectCampingBackend.Models.ViewModels.Members.MemberVm>
+@using PagedList.Mvc;
 @using PagedList;
-@model IEnumerable<FProjectCampingBackend.Models.EFModels.Member>
 
 @{
     ViewBag.Title = "Index";
@@ -18,7 +18,6 @@
             </div>
             <div>
                 帳號:@Html.TextBox("Account", null, new { @class = "form-control form-control-sm me-3", style = "width:auto;display:inline-block;" })
-
             </div>
             <div>
                 是否驗證:@Html.DropDownList("IsConfirmed", ViewData["IsConfirmed"] as SelectList, null, new { @class = "form-select form select-sm me-3 ms-3", style = "width:auto;display:inline-block;" })
@@ -28,35 +27,26 @@
             </div>
             <div>
                 建立時間:
-                @Html.TextBox("FirstTime", null, new { @class = "form-control form-control-sm me-3", style = "width:auto;display:inline-block;", type = "date" })
-
+                @Html.TextBox("FirstTime", null, new { @class = "form-control form-control-sm", style = "width:auto;display:inline-block;", type = "date" })
+                ~
                 @Html.TextBox("EndTime", null, new { @class = "form-control form-control-sm me-3", style = "width:auto;display:inline-block;", type = "date" })
-
             </div>
 
             <div>
                 <input type="submit" value="查詢" class="btn btn-primary" />
             </div>
         </div>
-
     </form>
 </div>
 
-
-
-
-
-
-<table class="table table-striped">
-
-    <tr class="table-dark">
+<table class="table">
+    <tr>
         <th>
             @Html.DisplayNameFor(model => model.Id)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Account)
         </th>
-
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -66,7 +56,6 @@
         <th>
             @Html.DisplayNameFor(model => model.PhoneNum)
         </th>
-
         <th>
             @Html.DisplayNameFor(model => model.Enabled)
         </th>
@@ -75,9 +64,8 @@
             @Html.DisplayNameFor(model => model.CreatedTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsConfirmed)
+            @Html.DisplayNameFor(model => model.IsConfirmedDisplayName)
         </th>
-
         <th></th>
     </tr>
 
@@ -89,21 +77,22 @@
             </td>
 
             <td>
-
-                @Html.DisplayFor(modelItem => item.Account)
-            </td>
-
-            <td>
                 @if (item.Photo == null)
                 {
-                    <img src="/images/camping_no.jpg" alt="大頭照" class="img-fluid memberPhoto">
+                    <div class="memberPhoto">
+                        <img src="/images/camping_no.jpg" alt="大頭照" class="img-fluid memberPhoto">
+                    </div>
                 }
                 else
                 {
-                    <img src="/files/@Html.DisplayFor(modelItem => item.Photo)" alt="@item.Account" class="img-fluid memberPhoto" />
+                    <div class="memberPhoto">
+                        <img src="/files/@Html.DisplayFor(modelItem => item.Photo)" alt="@item.Account" class="img-fluid" />
+                    </div>
 
                 }
-
+                @Html.DisplayFor(modelItem => item.Account)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
@@ -112,7 +101,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNum)
             </td>
-
             <td>
                 @Html.DisplayFor(modelItem => item.Enabled)
             </td>
@@ -120,30 +108,46 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedTime)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.IsConfirmed)
+                @Html.DisplayFor(modelItem => item.IsConfirmedDisplayName)
             </td>
-
             <td>
-                @Html.ActionLink("編輯", "Edit", new { id = item.Id }, new { @class = "btn btn-dark" })
-
+                <i class="bi bi-pen-fill"></i>
+                @Html.ActionLink("編輯", "Edit", new { id = item.Id }, new { @class = "" })
             </td>
         </tr>
     }
-
 </table>
 @Html.PagedListPager((IPagedList)Model, x => Url.Action("Index", new { page = x }))
 
 @section css{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
     <style>
         .memberPhoto {
-            max-width: 50px;
-            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            position: relative;
         }
-        .pagination-container{
-            text-align:right;
+
+            .memberPhoto img {
+                border-radius: 50%;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .pagination-container {
+            text-align: right;
+        }
+
+        .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+            background-color: #4c4c4c;
+        }
+
+        a {
+            color: #000000;
         }
     </style>
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
 
 }

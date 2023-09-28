@@ -12,6 +12,27 @@
     <link rel="stylesheet" href="~/css/main_member.css">
     <link rel="stylesheet" href="~/css/OrderHistory.css" />
     <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <style>
+
+        .pagination-container {
+            text-align: center;
+        }
+
+        .pagination > .active > a,
+        .pagination > .active > span,
+        .pagination > .active > a:hover,
+        .pagination > .active > span:hover,
+        .pagination > .active > a:focus,
+        .pagination > .active > span:focus {
+            background-color: #622c00;
+            border-color: #FFF;
+        }
+
+        a {
+            color: rgb(207, 123, 90);
+            font-weight: 500;
+        }
+    </style>
 }
 
 <div class="container">
@@ -101,23 +122,14 @@
                         </tbody>
                     </table>
                 </div>
-                @Html.PagedListPager((IPagedList)Model, x => Url.Action("MyOrders", new { page = x }))
-                <!--頁面切換-->
-                @*<ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next" style=" font-weight: 900;">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>*@
+                <div style="margin-top: 19%">
+                    @Html.PagedListPager((IPagedList)Model, x => Url.Action("MyOrders", new { page = x }))
+                </div>
+
+                <div class="text-end mt-3">
+                    <i class="bi bi-arrow-left-square-fill"></i>
+                    @Html.ActionLink("回到會員專區", "Index")
+                </div>
             </div>
         </div>
     </div>

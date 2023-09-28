@@ -18,11 +18,16 @@
                 <td>
                     @if (member.Photo == null)
                     {
-                        <img src="/images/camping_no.jpg" alt="大頭照" class="img-fluid memberPhoto">
+                        <div class="memberPhoto">
+                            <img src="/images/camping_no.jpg" alt="大頭照" class="img-fluid memberPhoto">
+                        </div>
                     }
                     else
                     {
-                        <img src="/files/@Html.DisplayFor(modelItem => member.Photo)" alt="@member.Account" class="img-fluid memberPhoto" />
+                        <div class="memberPhoto">
+                            <img src="/files/@Html.DisplayFor(modelItem => member.Photo)" alt="@member.Account" class="img-fluid" />
+                        </div>
+
 
                     }
 

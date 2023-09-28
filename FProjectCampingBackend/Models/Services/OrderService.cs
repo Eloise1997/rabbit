@@ -1,13 +1,32 @@
-﻿using System;
+﻿using FProjectCampingBackend.Models.EFModels;
+using FProjectCampingBackend.Models.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FProjectCampingBackend.Models.Services
 {
 	public class OrderService
 	{
+		public Order ConvertToOrder(OrderMemberNewVm orderMember)
+		{
+			if (orderMember == null)
+			{
+				return null;
+			}
+
+			return new Order
+			{
+				Id = orderMember.Id,
+				OrderTime = orderMember.OrderTime,
+				TotalPrice = orderMember.TotalPrice,
+				Member = new Member
+				{
+					Account = orderMember.Account,
+					Photo = orderMember.Photo
+				}
+			};
+		}
+
 		public SelectList GetStatusDropdownList()
 		{
 			var items = new List<SelectListItem>

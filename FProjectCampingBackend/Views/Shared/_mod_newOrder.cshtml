@@ -1,36 +1,44 @@
-﻿
+﻿@{ 
+    var newOrders = ViewBag.NewOrders as IEnumerable<FProjectCampingBackend.Models.ViewModels.OrderMemberNewVm>;
+}
 
-@model IEnumerable<FProjectCampingBackend.Models.EFModels.Order>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>編號</th>
-            <th>帳號</th>
-            <th>時間</th>
+       <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>編號</th>
+                    <th>帳號</th>
+                    <th>時間</th>
+                    <th>金額</th>
 
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var member in Model)
-        {
-            <tr>
-                <td>@member.Id</td>
-                <td>
-                    @if (member.Photo == null)
-                    {
-                        <img src="/images/camping_no.jpg" alt="大頭照" class="img-fluid memberPhoto">
-                    }
-                    else
-                    {
-                        <img src="/files/@Html.DisplayFor(modelItem => member.Photo)" alt="@member.Account" class="img-fluid memberPhoto" />
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in newOrders)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>
 
-                    }
+                            @if (item.Photo == null)
+                            {
+                                <div class="memberPhoto">
+                                    <img src="/images/camping_no.jpg" alt="大頭照" class="img-fluid memberPhoto">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="memberPhoto">
+                                    <img src="/files/@Html.DisplayFor(modelItem => item.Photo)" alt="@item.Account" class="img-fluid" />
+                                </div>
 
-                    @member.Account
-                </td>
 
-                <td>@member.CreatedTime</td>
-            </tr>
-        }
-    </tbody>
-</table>
+                            }
+                            @item.Account
+                        </td>
+
+                        <td>@item.OrderTime</td>
+                        <td>@item.TotalPrice</td>
+                    </tr>
+                }
+            </tbody>
+        </table>

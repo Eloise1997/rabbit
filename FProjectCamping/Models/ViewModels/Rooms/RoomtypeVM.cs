@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FProjectCamping.Models.ViewModels.Rooms
 {
-    public class RoomtypeVM
+	public class RoomtypeVM
 	{
 		public int Id { get; set; }
 		public int RoomTypeId { get; set; }
@@ -15,7 +15,5 @@ namespace FProjectCamping.Models.ViewModels.Rooms
 		public int WeekendPrice { get; set; }
 		public int WeekdayPrice { get; set; }
 		public RoomType RooName { get; set; }
-		public Photo FileName { get; set; }
-
 	}
 }

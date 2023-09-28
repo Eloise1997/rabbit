@@ -190,23 +190,24 @@
     <Compile Include="Models\EFModels\CartItem.cs" />
     <Compile Include="Models\EFModels\Member.cs" />
     <Compile Include="Models\EFModels\News.cs" />
-    <Compile Include="Models\EFModels\NewsImage.cs" />
     <Compile Include="Models\EFModels\Order.cs" />
     <Compile Include="Models\EFModels\OrderItem.cs" />
     <Compile Include="Models\EFModels\PaymentType.cs" />
-    <Compile Include="Models\EFModels\Photo.cs" />
     <Compile Include="Models\EFModels\Reservation.cs" />
     <Compile Include="Models\EFModels\Room.cs" />
-    <Compile Include="Models\EFModels\RoomService.cs" />
     <Compile Include="Models\EFModels\RoomType.cs" />
-    <Compile Include="Models\EFModels\Service.cs" />
     <Compile Include="Models\EFModels\sysdiagram.cs" />
     <Compile Include="Models\EFModels\User.cs" />
     <Compile Include="Models\Repostories\MemberRepository.cs" />
     <Compile Include="Models\Repostories\OrderRepository.cs" />
     <Compile Include="Models\Services\DropdownListService.cs" />
+    <Compile Include="Models\Services\MemberService.cs" />
     <Compile Include="Models\Services\OrderService.cs" />
-    <Compile Include="Models\ViewModels\MemberVm.cs" />
+    <Compile Include="Models\Services\SortingService.cs" />
+    <Compile Include="Models\ViewModels\Members\MemberExts.cs" />
+    <Compile Include="Models\ViewModels\Members\MemberSearchCriteria.cs" />
+    <Compile Include="Models\ViewModels\Members\MemberVm.cs" />
+    <Compile Include="Models\ViewModels\OrderMemberNewVm.cs" />
     <Compile Include="Models\ViewModels\Orders\OrderVm.cs" />
     <Compile Include="Models\ViewModels\Orders\SearchParameterVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -229,11 +230,23 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="css\memberedit.css" />
     <Content Include="favicon.ico" />
+    <Content Include="files\3zj10lv3.jpk.jpg" />
+    <Content Include="files\a051z0f2.msc.jpg" />
+    <Content Include="files\ebvizpq0.4hm.jpg" />
+    <Content Include="files\f2wf2sgx.azi.jpg" />
+    <Content Include="files\hgsuc3zp.f32.jpg" />
+    <Content Include="files\iyzr4jln.cx0.jpg" />
+    <Content Include="files\ju1yvn0d.jd5.png" />
+    <Content Include="files\ljqxhrrt.uri.jpg" />
+    <Content Include="files\yubhi5ly.2ec.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\camping.png" />
     <Content Include="images\campinglogo2.png" />
+    <Content Include="images\camping_no.jpg" />
+    <Content Include="images\photo1.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -278,7 +291,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="files\" />
     <Folder Include="js\" />
   </ItemGroup>
   <ItemGroup>

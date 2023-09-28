@@ -13,9 +13,7 @@ namespace FProjectCamping.Models.EFModels
         {
             CartItems = new HashSet<CartItem>();
             OrderItems = new HashSet<OrderItem>();
-            Photos = new HashSet<Photo>();
             Reservations = new HashSet<Reservation>();
-            RoomServices = new HashSet<RoomService>();
         }
 
         public int Id { get; set; }
@@ -38,6 +36,10 @@ namespace FProjectCamping.Models.EFModels
 
         public int Stock { get; set; }
 
+        [Required]
+        [StringLength(1000)]
+        public string Photo { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartItem> CartItems { get; set; }
 
@@ -45,14 +47,8 @@ namespace FProjectCamping.Models.EFModels
         public virtual ICollection<OrderItem> OrderItems { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Photo> Photos { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reservation> Reservations { get; set; }
 
         public virtual RoomType RoomType { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoomService> RoomServices { get; set; }
     }
 }
