@@ -63,7 +63,7 @@
                     <div class="bottomArea">
                         <button type="button" id="MyOrder">我的訂單</button>
                         <!-- 選擇PayPal || 尚未付款 & 付款失敗 才顯示按鈕 -->
-                        @if (Model.PaymentType == "PayPal" && (Model.StatusEnum == 1 || Model.StatusEnum == 3))
+                        @if (Model.PaymentType == "Paypal" && (Model.StatusEnum == 1 || Model.StatusEnum == 3))
                         {
                             <!-- Paypal Smart Payment Button -->
                             <div id="paypal-button-container"></div>
@@ -117,7 +117,7 @@
         });
 
     },
-    onError: function (err) {
+    @*onError: function (err) {
         console.log('onError', err);
         fetch('/Orders/CallBack', {
             method: 'POST',
@@ -138,7 +138,7 @@
             icon: 'error',
             title: '付款失敗'
         })
-    },
+    },*@
     onCancel: function () {
         // 取消
         Swal.fire({
